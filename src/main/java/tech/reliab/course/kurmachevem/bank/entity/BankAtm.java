@@ -3,47 +3,39 @@ package tech.reliab.course.kurmachevem.bank.entity;
 import java.math.BigDecimal;
 
 public class BankAtm {
-    public enum WorkingStatus {
+    public enum Status {
         NOT_WORKING,
-        WORKING
-    }
-
-    public enum MoneyStatus {
-        NO_MONEY,
-        HAS_MONEY
+        WORKING,
+        NO_MONEY
     }
 
     private static int currentId;
     private int id;
     private String name;
     private String address;
-    private WorkingStatus workingStatus;
-    private MoneyStatus moneyStatus;
+    private Status status;
     private Bank bank;
     private BankOffice bankOffice;
-    private Employee employee;
     private boolean isCashWithdrawalAvailable;
     private boolean isCashDepositAvailable;
     private BigDecimal totalMoney;
     private BigDecimal maintenanceCost;
 
+    private void initId() {
+        id = currentId++;
+    }
+
     public BankAtm(BankAtm bankAtm) {
         this.id = bankAtm.id;
         this.name = bankAtm.name;
         this.address = bankAtm.address;
-        this.workingStatus = bankAtm.workingStatus;
-        this.moneyStatus = bankAtm.moneyStatus;
+        this.status = bankAtm.status;
         this.bank = new Bank(bankAtm.bank);
         this.bankOffice = new BankOffice(bankAtm.bankOffice);
-        this.employee = new Employee(bankAtm.employee);
         this.isCashWithdrawalAvailable = bankAtm.isCashWithdrawalAvailable;
         this.isCashDepositAvailable = bankAtm.isCashDepositAvailable;
         this.totalMoney = bankAtm.totalMoney;
         this.maintenanceCost = bankAtm.maintenanceCost;
-    }
-
-    private void initId() {
-        id = currentId++;
     }
 
     public BankAtm() {
@@ -58,35 +50,31 @@ public class BankAtm {
         this.address = address;
     }
 
-    public BankAtm(String name, String address, WorkingStatus workingStatus, MoneyStatus moneyStatus, Bank bank, BankOffice bankOffice,
+    public BankAtm(String name, String address, Status status, Bank bank, BankOffice bankOffice,
                    Employee employee, boolean isCashWithdrawalAvailable, boolean isCashDepositAvailable, BigDecimal totalMoney,
                    BigDecimal maintenanceCost) {
         initId();
         initWithDefaults();
         this.name = name;
         this.address = address;
-        this.workingStatus = workingStatus;
-        this.moneyStatus = moneyStatus;
+        this.status = status;
         this.bank = bank;
         this.bankOffice = bankOffice;
-        this.employee = employee;
         this.isCashWithdrawalAvailable = isCashWithdrawalAvailable;
         this.isCashDepositAvailable = isCashDepositAvailable;
         this.totalMoney = totalMoney;
         this.maintenanceCost = maintenanceCost;
     }
 
-    public BankAtm(int id, String name, String address, WorkingStatus workingStatus, MoneyStatus moneyStatus, Bank bank, BankOffice bankOffice,
+    public BankAtm(int id, String name, String address, Status status, Bank bank, BankOffice bankOffice,
                    Employee employee, boolean isCashWithdrawalAvailable, boolean isCashDepositAvailable, BigDecimal totalMoney,
                    BigDecimal maintenanceCost) {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.workingStatus = workingStatus;
-        this.moneyStatus = moneyStatus;
+        this.status = status;
         this.bank = bank;
         this.bankOffice = bankOffice;
-        this.employee = employee;
         this.isCashWithdrawalAvailable = isCashWithdrawalAvailable;
         this.isCashDepositAvailable = isCashDepositAvailable;
         this.totalMoney = totalMoney;
@@ -95,20 +83,18 @@ public class BankAtm {
 
     @Override
     public String toString() {
-        return "BankAtm{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", workingStatus=" + workingStatus +
-                ", moneyStatus=" + moneyStatus +
-                ", bank=" + bank +
-                ", bankOffice=" + bankOffice +
-                ", employee=" + employee +
-                ", isCashWithdrawalAvailable=" + isCashWithdrawalAvailable +
-                ", isCashDepositAvailable=" + isCashDepositAvailable +
-                ", totalMoney=" + totalMoney +
-                ", maintenanceCost=" + maintenanceCost +
-                '}';
+        return "BankAtm:{" +
+                "\n id='" + getId() + "'" +
+                ",\n name='" + getName() + "'" +
+                ",\n address='" + getAddress() + "'" +
+                ",\n status='" + getStatus() + "'" +
+                ",\n bank='" + getBank().getName() + "'" +
+                ",\n bankOffice=" + getBankOffice() +
+                ",\n isCashWithdrawalAvailable='" + isIsCashWithdrawalAvailable() + "'" +
+                ",\n isCashDepositAvailable='" + isIsCashDepositAvailable() + "'" +
+                ",\n totalMoney='" + String.format("%.2f", getTotalMoney()) + "'" +
+                ",\n maintenanceCost='" + String.format("%.2f", getMaintenanceCost()) + "'" +
+                "\n}";
     }
 
     public int getId() {
@@ -135,20 +121,12 @@ public class BankAtm {
         this.address = address;
     }
 
-    public WorkingStatus getWorkingStatus() {
-        return workingStatus;
+    public Status getStatus() {
+        return this.status;
     }
 
-    public MoneyStatus getMoneyStatus() {
-        return moneyStatus;
-    }
-
-    public void setWorkingStatus(WorkingStatus workingStatus) {
-        this.workingStatus = workingStatus;
-    }
-
-    public void setMoneyStatus(MoneyStatus moneyStatus) {
-        this.moneyStatus = moneyStatus;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Bank getBank() {
@@ -165,14 +143,6 @@ public class BankAtm {
 
     public void setBankOffice(BankOffice bankOffice) {
         this.bankOffice = bankOffice;
-    }
-
-    public Employee getEmployee() {
-        return this.employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
     }
 
     public boolean isIsCashWithdrawalAvailable() {
@@ -218,11 +188,9 @@ public class BankAtm {
     private void initWithDefaults() {
         name = "No name";
         address = "No address";
-        workingStatus = WorkingStatus.NOT_WORKING;
-        moneyStatus = MoneyStatus.NO_MONEY;
+        status = Status.NOT_WORKING;
         bank = null;
         bankOffice = null;
-        employee = null;
         isCashWithdrawalAvailable = false;
         isCashDepositAvailable = false;
         totalMoney = new BigDecimal("0");

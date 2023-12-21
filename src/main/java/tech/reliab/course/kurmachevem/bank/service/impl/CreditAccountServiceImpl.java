@@ -6,21 +6,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import tech.reliab.course.kurmachevem.bank.entity.CreditAccount;
+import tech.reliab.course.kurmachevem.bank.exception.NotEnoughMoneyException;
+import tech.reliab.course.kurmachevem.bank.exception.NotFoundException;
+import tech.reliab.course.kurmachevem.bank.exception.NotUniqueIdException;
+import tech.reliab.course.kurmachevem.bank.service.ClientService;
 import tech.reliab.course.kurmachevem.bank.service.CreditAccountService;
-import tech.reliab.course.kurmachevem.bank.service.UserService;
 
 public class CreditAccountServiceImpl implements CreditAccountService {
-    private final Map<Integer, CreditAccount> creditAccountsTable = new HashMap<>();
-    private final UserService userService;
 
-    public CreditAccountServiceImpl(UserService userService) {
-        this.userService = userService;
+    private final Map<Integer, CreditAccount> creditAccountsTable = new HashMap<>();
+    private final ClientService clientService;
+
+    public CreditAccountServiceImpl(ClientService clientService) {
+        this.clientService = clientService;
     }
 
     @Override
-    public CreditAccount create(CreditAccount creditAccount) {
+    public CreditAccount create(CreditAccount creditAccount) throws NotFoundException, NotUniqueIdException {
         if (creditAccount == null) {
             return null;
         }
@@ -40,18 +43,18 @@ public class CreditAccountServiceImpl implements CreditAccountService {
             return null;
         }
 
-        // TODO: Возможно добавление дополнительных механизмов - расчет параметров
-        // кредита и т.п.
-
         CreditAccount newAccount = new CreditAccount(creditAccount);
+        if (creditAccountsTable.containsKey(newAccount.getId())) {
+            throw new NotUniqueIdException(newAccount.getId());
+        }
         creditAccountsTable.put(newAccount.getId(), newAccount);
-        userService.addCreditAccount(newAccount.getClient().getId(), newAccount);
+        clientService.addCreditAccount(newAccount.getClient().getId(), newAccount);
 
         return newAccount;
     }
 
     @Override
-    public boolean makeMonthlyPayment(CreditAccount creditAccount) {
+    public boolean makeMonthlyPayment(CreditAccount creditAccount) throws NotEnoughMoneyException {
         if (creditAccount == null || creditAccount.getPaymentAccount() == null) {
             System.err.println("Error: CreditAccount - no account to take money from");
             return false;
@@ -62,7 +65,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
 
         if (paymentAccountBalance.compareTo(monthlyPayment) < 0) {
             System.err.println("Error: CreditAccount - not enough balance for monthly payment");
-            return false;
+            throw new NotEnoughMoneyException();
         }
 
         creditAccount.getPaymentAccount().setBalance(paymentAccountBalance.subtract(monthlyPayment));
@@ -77,11 +80,13 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     }
 
     @Override
-    public CreditAccount getCreditAccountById(int id) {
+    public CreditAccount getCreditAccountById(int id) throws NotFoundException {
         CreditAccount account = creditAccountsTable.get(id);
         if (account == null) {
             System.err.println("Credit account with id " + id + " is not found");
+            throw new NotFoundException(id);
         }
         return account;
     }
+
 }

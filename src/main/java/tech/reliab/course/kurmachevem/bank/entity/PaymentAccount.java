@@ -1,7 +1,6 @@
 package tech.reliab.course.kurmachevem.bank.entity;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 public class PaymentAccount extends Account {
     private BigDecimal balance;
@@ -12,25 +11,25 @@ public class PaymentAccount extends Account {
     }
 
     public PaymentAccount(PaymentAccount paymentAccount) {
-        super(paymentAccount.id, paymentAccount.user, paymentAccount.bank);
+        super(paymentAccount.id, paymentAccount.client, paymentAccount.bank);
         this.balance = paymentAccount.balance;
     }
 
-    public PaymentAccount(User user, Bank bank, BigDecimal balance) {
-        super(user, bank);
+    public PaymentAccount(Client client, Bank bank, BigDecimal balance) {
+        super(client, bank);
         this.balance = balance;
     }
 
-    public PaymentAccount(int id, User user, Bank bank, BigDecimal balance) {
-        super(id, user, bank);
+    public PaymentAccount(int id, Client client, Bank bank, BigDecimal balance) {
+        super(id, client, bank);
         this.balance = balance;
     }
 
     @Override
     public String toString() {
-        return "{" +
-                "\n account='" + super.toString() + "'" +
-                ",\n balance='" + getBalance() + "'" +
+        return "PaymentAccount:{" +
+                "\n account=" + super.toString() +
+                ",\n balance='" + String.format("%.2f", getBalance()) + "'" +
                 "\n}";
     }
 

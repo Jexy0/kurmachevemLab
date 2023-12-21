@@ -1,43 +1,42 @@
 package tech.reliab.course.kurmachevem.bank.entity;
 
-import java.util.UUID;
-
 public class Account {
     private static int currentId;
     protected int id;
-    protected User user;
+    protected Client client;
     protected Bank bank;
 
     private void initId() {
         id = currentId++;
     }
+
     public Account() {
         initId();
         initWithDefaults();
     }
 
-    public Account(User user, Bank bank) {
+    public Account(Client client, Bank bank) {
         initId();
         initWithDefaults();
-        this.user = user;
+        this.client = client;
         this.bank = bank;
     }
 
-    public Account(int id, User user, Bank bank) {
+    public Account(int id, Client client, Bank bank) {
         this.id = id;
-        this.user = user;
+        this.client = client;
         this.bank = bank;
     }
 
     public Account(Account account) {
         this.id = account.id;
-        this.user = new User(account.user);
+        this.client = new Client(account.client);
         this.bank = new Bank(account.bank);
     }
 
     @Override
     public String toString() {
-        return "{" +
+        return "Account:{" +
                 "\n id='" + getId() + "'" +
                 ",\n client='" + getClient() + "'" +
                 ",\n bank='" + getBank().getName() + "'" +
@@ -52,12 +51,12 @@ public class Account {
         this.id = id;
     }
 
-    public User getClient() {
-        return this.user;
+    public Client getClient() {
+        return this.client;
     }
 
-    public void setClient(User user) {
-        this.user = user;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public Bank getBank() {
@@ -69,7 +68,7 @@ public class Account {
     }
 
     private void initWithDefaults() {
-        user = null;
+        client = null;
         bank = null;
     }
 

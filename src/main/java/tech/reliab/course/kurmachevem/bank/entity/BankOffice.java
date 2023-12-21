@@ -1,7 +1,8 @@
 package tech.reliab.course.kurmachevem.bank.entity;
 
 import java.math.BigDecimal;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BankOffice {
     private static int currentId;
@@ -17,10 +18,13 @@ public class BankOffice {
     private boolean isCashDepositAvailable;
     private BigDecimal totalMoney;
     private BigDecimal rentPrice;
+    private List<Employee> employees;
+    private List<BankAtm> bankAtms;
 
     private void initId() {
         id = currentId++;
     }
+
     public BankOffice(String name, String address) {
         initId();
         initWithDefaults();
@@ -31,6 +35,7 @@ public class BankOffice {
     public BankOffice(int id, String name, String address, Bank bank, boolean isWorking, boolean isAtmPlaceable,
                       int atmCount, boolean isCreditAvailable, boolean isCashWithdrawalAvailable, boolean isCashDepositAvailable,
                       BigDecimal totalMoney, BigDecimal rentPrice) {
+        initWithDefaults();
         this.id = id;
         this.name = name;
         this.address = address;
@@ -76,11 +81,13 @@ public class BankOffice {
         this.isCashDepositAvailable = bankOffice.isCashDepositAvailable;
         this.totalMoney = bankOffice.totalMoney;
         this.rentPrice = bankOffice.rentPrice;
+        employees = bankOffice.employees;
+        bankAtms = bankOffice.bankAtms;
     }
 
     @Override
     public String toString() {
-        return "{" +
+        return "BankOffice:{" +
                 "\n id='" + getId() + "'" +
                 ",\n name='" + getName() + "'" +
                 ",\n address='" + getAddress() + "'" +
@@ -91,8 +98,8 @@ public class BankOffice {
                 ",\n isCreditAvailable='" + isIsCreditAvailable() + "'" +
                 ",\n isCashWithdrawalAvailable='" + isIsCashWithdrawalAvailable() + "'" +
                 ",\n isCashDepositAvailable='" + isIsCashDepositAvailable() + "'" +
-                ",\n totalMoney='" + getTotalMoney() + "'" +
-                ",\n rentPrice='" + getRentPrice() + "'" +
+                ",\n totalMoney='" + String.format("%.2f", getTotalMoney()) + "'" +
+                ",\n rentPrice='" + String.format("%.2f", getRentPrice()) + "'" +
                 "\n}";
     }
 
@@ -212,6 +219,22 @@ public class BankOffice {
         this.rentPrice = rentPrice;
     }
 
+    public void addEmployee(Employee employee) {
+        employees.add(employee);
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void addAtm(BankAtm bankAtm) {
+        bankAtms.add(bankAtm);
+    }
+
+    public List<BankAtm> getAtms() {
+        return bankAtms;
+    }
+
     private void initWithDefaults() {
         name = "No name";
         address = "No address";
@@ -224,6 +247,8 @@ public class BankOffice {
         isCashDepositAvailable = false;
         totalMoney = new BigDecimal("0");
         rentPrice = new BigDecimal("0");
+        employees = new ArrayList<>();
+        bankAtms = new ArrayList<>();
     }
 
 }

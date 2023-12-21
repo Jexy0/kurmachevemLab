@@ -1,6 +1,8 @@
 package tech.reliab.course.kurmachevem.bank.entity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Bank {
     private static int currentId;
@@ -16,6 +18,11 @@ public class Bank {
     private byte rating;
     private BigDecimal totalMoney;
     private BigDecimal interestRate;
+    private List<Employee> employees;
+    private List<Client> clients;
+    private List<BankOffice> bankOffices;
+    private List<BankAtm> bankAtms;
+    private List<Account> accounts;
 
     public Bank() {
         initId();
@@ -36,6 +43,11 @@ public class Bank {
         this.rating = bank.rating;
         this.totalMoney = bank.totalMoney;
         this.interestRate = bank.interestRate;
+        employees = bank.employees;
+        clients = bank.clients;
+        bankOffices = bank.bankOffices;
+        bankAtms = bank.bankAtms;
+        accounts = bank.accounts;
     }
 
     public Bank(String name) {
@@ -52,7 +64,7 @@ public class Bank {
 
     @Override
     public String toString() {
-        return "{" +
+        return "Bank:{" +
                 "\n id='" + getId() + "'" +
                 ",\n name='" + getName() + "'" +
                 ",\n officeCount='" + getOfficeCount() + "'" +
@@ -60,8 +72,8 @@ public class Bank {
                 ",\n employeeCount='" + getEmployeeCount() + "'" +
                 ",\n clientCount='" + getClientCount() + "'" +
                 ",\n rating='" + getRating() + "'" +
-                ",\n totalMoney='" + getTotalMoney() + "'" +
-                ",\n interestRate='" + getInterestRate() + "'" +
+                ",\n totalMoney='" + String.format("%.2f", getTotalMoney()) + "'" +
+                ",\n interestRate='" + String.format("%.2f", getInterestRate()) + "'" +
                 "\n}";
     }
 
@@ -137,6 +149,32 @@ public class Bank {
         this.interestRate = interestRate;
     }
 
+    public void addEmployee(Employee employee) {
+        employees.add(employee);
+    }
+
+    public void addClient(Client client) {
+        clients.add(client);
+    }
+
+    public void addOffice(BankOffice bankOffice) {
+        for(BankAtm bankAtm : bankOffice.getAtms()) {
+            addAtm(bankAtm);
+        }
+        for(Employee employee : bankOffice.getEmployees()) {
+            addEmployee(employee);
+        }
+        bankOffices.add(bankOffice);
+    }
+
+    public void addAtm(BankAtm bankAtm) {
+        bankAtms.add(bankAtm);
+    }
+
+    public void addAccount(Account account) {
+        accounts.add(account);
+    }
+
     private void initWithDefaults() {
         name = "No name";
         officeCount = 0;
@@ -146,6 +184,11 @@ public class Bank {
         rating = 0;
         totalMoney = new BigDecimal("0");
         interestRate = new BigDecimal("0");
+        employees = new ArrayList<>();
+        clients = new ArrayList<>();
+        bankOffices = new ArrayList<>();
+        bankAtms = new ArrayList<>();
+        accounts = new ArrayList<>();
     }
 
 }

@@ -6,28 +6,36 @@ import java.util.List;
 import tech.reliab.course.kurmachevem.bank.entity.BankAtm;
 import tech.reliab.course.kurmachevem.bank.entity.BankOffice;
 import tech.reliab.course.kurmachevem.bank.entity.Employee;
+import tech.reliab.course.kurmachevem.bank.exception.NotEnoughMoneyException;
+import tech.reliab.course.kurmachevem.bank.exception.NotFoundException;
+import tech.reliab.course.kurmachevem.bank.exception.NotUniqueIdException;
 
 public interface BankOfficeService {
-    BankOffice create(BankOffice bankOffice);
+    BankOffice create(BankOffice bankOffice) throws NotFoundException, NotUniqueIdException;
 
-    public void printBankOfficeData(int id);
+    public void setEmployeeService(EmployeeService employeeService);
 
-    public BankOffice getBankOfficeById(int id);
+    public void setAtmService(AtmService atmService);
+
+    public void printBankOfficeData(int id) throws NotFoundException;
+
+    public BankOffice getBankOfficeById(int id) throws NotFoundException;
 
     public List<BankOffice> getAllOffices();
 
-    public List<Employee> getAllEmployeesByOfficeId(int id);
+    public List<Employee> getAllEmployeesByOfficeId(int id) throws NotFoundException;
 
-    boolean installAtm(int id, BankAtm bankAtm);
-    boolean installAtm(BankOffice bankOffice, BankAtm bankAtm);
-
-    boolean removeAtm(BankOffice bankOffice, BankAtm bankAtm);
+    boolean installAtm(int id, BankAtm bankAtm) throws NotFoundException;
 
     boolean depositMoney(BankOffice bankOffice, BigDecimal amount);
 
-    boolean withdrawMoney(BankOffice bankOffice, BigDecimal amount);
+    boolean withdrawMoney(BankOffice bankOffice, BigDecimal amount) throws NotFoundException, NotEnoughMoneyException;
 
-    boolean addEmployee(int id, Employee employee);
+    boolean addEmployee(int id, Employee employee) throws NotFoundException;
 
-    boolean removeEmployee(BankOffice bankOffice, Employee employee);
+    public boolean isSuitableBankOffice(BankOffice bankOffice, BigDecimal money) throws NotFoundException;
+
+    public List<BankAtm> getSuitableBankAtmInOffice(BankOffice bankOffice, BigDecimal money);
+
+    public List<Employee> getSuitableEmployeeInOffice(BankOffice bankOffice) throws NotFoundException;
 }

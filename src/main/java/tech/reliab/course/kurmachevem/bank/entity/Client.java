@@ -2,29 +2,32 @@ package tech.reliab.course.kurmachevem.bank.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
-public class User extends Person {
+public class Client extends Person {
     public static final BigDecimal MAX_MONTHLY_INCOME = new BigDecimal("10000");
     private String placeOfWork;
     private BigDecimal monthlyIncome;
     private Bank bank;
     private BigDecimal creditRating;
+    private List<Account> accounts;
 
-    public User() {
+    public Client() {
         initWithDefaults();
     }
 
-    public User(User user) {
-        super(user.id, user.name, user.birthDate);
-        this.placeOfWork = user.placeOfWork;
-        this.monthlyIncome = user.monthlyIncome;
-        this.bank = new Bank(user.bank);
-        this.creditRating = user.creditRating;
+    public Client(Client client) {
+        super(client.id, client.name, client.birthDate);
+        this.placeOfWork = client.placeOfWork;
+        this.monthlyIncome = client.monthlyIncome;
+        this.bank = new Bank(client.bank);
+        this.creditRating = client.creditRating;
+        this.accounts = client.accounts;
     }
 
-    public User(String name, LocalDate birthDate, String placeOfWork, BigDecimal monthlyIncome, Bank bank,
-                BigDecimal creditRating) {
+    public Client(String name, LocalDate birthDate, String placeOfWork, BigDecimal monthlyIncome, Bank bank,
+                  BigDecimal creditRating) {
         super(name, birthDate);
         initWithDefaults();
         this.name = name;
@@ -35,11 +38,10 @@ public class User extends Person {
         this.creditRating = creditRating;
     }
 
-    public User(int id, String name, LocalDate birthDate, String placeOfWork, BigDecimal monthlyIncome, Bank bank,
-                BigDecimal creditRating) {
-        this.id = id;
-        this.name = name;
-        this.birthDate = birthDate;
+    public Client(int id, String name, LocalDate birthDate, String placeOfWork, BigDecimal monthlyIncome, Bank bank,
+                  BigDecimal creditRating) {
+        super(id, name, birthDate);
+        initWithDefaults();
         this.placeOfWork = placeOfWork;
         this.monthlyIncome = monthlyIncome;
         this.bank = bank;
@@ -48,12 +50,12 @@ public class User extends Person {
 
     @Override
     public String toString() {
-        return "{" +
+        return "Client:{" +
                 "\n person='" + super.toString() + "'" +
                 ",\n placeOfWork='" + getPlaceOfWork() + "'" +
-                ",\n monthlyIncome='" + getMonthlyIncome() + "'" +
+                ",\n monthlyIncome='" + String.format("%.2f", getMonthlyIncome()) + "'" +
                 ",\n bank='" + getBank().getName() + "'" +
-                ",\n creditRating='" + getCreditRating() + "'" +
+                ",\n creditRating='" + String.format("%.2f", getCreditRating()) + "'" +
                 "\n}";
     }
 
@@ -89,11 +91,16 @@ public class User extends Person {
         this.creditRating = creditRating;
     }
 
+    public void addAccount(Account account) {
+        accounts.add(account);
+    }
+
     private void initWithDefaults() {
         placeOfWork = "No place of work";
         monthlyIncome = new BigDecimal("0");
         bank = null;
         creditRating = new BigDecimal("0");
+        accounts = new ArrayList<>();
     }
 
 }

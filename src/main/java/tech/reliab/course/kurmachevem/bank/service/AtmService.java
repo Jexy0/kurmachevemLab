@@ -1,17 +1,23 @@
 package tech.reliab.course.kurmachevem.bank.service;
 
-import tech.reliab.course.kurmachevem.bank.entity.BankAtm;
-import tech.reliab.course.kurmachevem.bank.entity.Employee;
-
-import java.util.List;
 import java.math.BigDecimal;
+import java.util.List;
+
+import tech.reliab.course.kurmachevem.bank.entity.BankAtm;
+import tech.reliab.course.kurmachevem.bank.exception.NotEnoughMoneyException;
+import tech.reliab.course.kurmachevem.bank.exception.NotFoundException;
+import tech.reliab.course.kurmachevem.bank.exception.NotUniqueIdException;
 
 public interface AtmService {
-    BankAtm create(BankAtm bankAtm);
-    void fix(BankAtm bankAtm);
-    public BankAtm getBankAtmById(int id);
+    BankAtm create(BankAtm bankAtm) throws NotFoundException, NotUniqueIdException;
+
+    public BankAtm getBankAtmById(int id) throws NotFoundException;
+
     public List<BankAtm> getAllBankAtms();
-    public boolean withdrawMoney(BankAtm bankAtm, BigDecimal amount);
-    public boolean depositMoney(BankAtm bankAtm, BigDecimal amount);
-    public void changeEmployee(BankAtm bankAtm, Employee employee);
+
+    boolean depositMoney(BankAtm bankAtm, BigDecimal amount);
+
+    boolean withdrawMoney(BankAtm bankAtm, BigDecimal amount) throws NotEnoughMoneyException;
+
+    public boolean isAtmSuitable(BankAtm bankAtm, BigDecimal money);
 }
