@@ -25,6 +25,7 @@ public class User extends Person {
 
     public User(String name, LocalDate birthDate, String placeOfWork, BigDecimal monthlyIncome, Bank bank,
                 BigDecimal creditRating) {
+        super(name, birthDate);
         initWithDefaults();
         this.name = name;
         this.birthDate = birthDate;
@@ -34,7 +35,7 @@ public class User extends Person {
         this.creditRating = creditRating;
     }
 
-    public User(UUID id, String name, LocalDate birthDate, String placeOfWork, BigDecimal monthlyIncome, Bank bank,
+    public User(int id, String name, LocalDate birthDate, String placeOfWork, BigDecimal monthlyIncome, Bank bank,
                 BigDecimal creditRating) {
         this.id = id;
         this.name = name;
@@ -51,7 +52,7 @@ public class User extends Person {
                 "\n person='" + super.toString() + "'" +
                 ",\n placeOfWork='" + getPlaceOfWork() + "'" +
                 ",\n monthlyIncome='" + getMonthlyIncome() + "'" +
-                ",\n bank='" + getBank() + "'" +
+                ",\n bank='" + getBank().getName() + "'" +
                 ",\n creditRating='" + getCreditRating() + "'" +
                 "\n}";
     }

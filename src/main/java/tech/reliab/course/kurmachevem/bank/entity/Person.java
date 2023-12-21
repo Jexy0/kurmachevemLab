@@ -1,30 +1,36 @@
 package tech.reliab.course.kurmachevem.bank.entity;
 
 import java.time.LocalDate;
-import java.util.UUID;
+import java.time.format.DateTimeFormatter;
 
 public class Person {
-    protected UUID id;
+    private static int currentId;
+    protected int id;
     protected String name;
     protected LocalDate birthDate;
 
+    private void initId() {
+        id = currentId++;
+    }
     public Person() {
+        initId();
         initWithDefaults();
     }
 
     public Person(Person person) {
-        this.id = UUID.fromString(person.id.toString());
+        this.id = person.id;
         this.name = person.name;
         this.birthDate = person.birthDate;
     }
 
     public Person(String name, LocalDate birthDate) {
+        initId();
         initWithDefaults();
         this.name = name;
         this.birthDate = birthDate;
     }
 
-    public Person(UUID id, String name, LocalDate birthDate) {
+    public Person(int id, String name, LocalDate birthDate) {
         this.id = id;
         this.name = name;
         this.birthDate = birthDate;
@@ -35,15 +41,15 @@ public class Person {
         return "{" +
                 "\n id='" + getId() + "'" +
                 ",\n name='" + getName() + "'" +
-                ",\n birthdDate='" + getBirthDate() + "'" +
+                ",\n birthdDate='" + getBirthDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + "'" +
                 "\n}";
     }
 
-    public UUID getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -64,7 +70,6 @@ public class Person {
     }
 
     private void initWithDefaults() {
-        id = UUID.randomUUID();
         name = "No name";
         birthDate = null;
     }

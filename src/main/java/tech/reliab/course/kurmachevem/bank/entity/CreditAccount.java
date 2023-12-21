@@ -48,7 +48,7 @@ public class CreditAccount extends Account {
         this.paymentAccount = paymentAccount;
     }
 
-    public CreditAccount(UUID id, User user, Bank bank, LocalDate dateStart, LocalDate dateEnd, int monthCount,
+    public CreditAccount(int id, User user, Bank bank, LocalDate dateStart, LocalDate dateEnd, int monthCount,
                          BigDecimal creditAmount, BigDecimal remainingCreditAmount, BigDecimal monthlyPayment,
                          BigDecimal interestRate, Employee employee, PaymentAccount paymentAccount) {
         super(id, user, bank);
@@ -72,7 +72,7 @@ public class CreditAccount extends Account {
                 ",\n monthCount='" + getMonthCount() + "'" +
                 ",\n creditAmount='" + getCreditAmount() + "'" +
                 ",\n remainingCreditAmount='" + getRemainingCreditAmount() + "'" +
-                ",\n montlyPayment='" + getMonthlyPayment() + "'" +
+                ",\n monthlyPayment='" + getMonthlyPayment() + "'" +
                 ",\n interestRate='" + getInterestRate() + "'" +
                 ",\n employee='" + getEmployee() + "'" +
                 ",\n paymentAccount='" + getPaymentAccount() + "'" +

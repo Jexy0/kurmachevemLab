@@ -1,7 +1,6 @@
 package tech.reliab.course.kurmachevem.bank.entity;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 public class BankAtm {
     public enum WorkingStatus {
@@ -14,7 +13,8 @@ public class BankAtm {
         HAS_MONEY
     }
 
-    private UUID id;
+    private static int currentId;
+    private int id;
     private String name;
     private String address;
     private WorkingStatus workingStatus;
@@ -28,7 +28,7 @@ public class BankAtm {
     private BigDecimal maintenanceCost;
 
     public BankAtm(BankAtm bankAtm) {
-        this.id = UUID.fromString(bankAtm.id.toString());
+        this.id = bankAtm.id;
         this.name = bankAtm.name;
         this.address = bankAtm.address;
         this.workingStatus = bankAtm.workingStatus;
@@ -42,11 +42,17 @@ public class BankAtm {
         this.maintenanceCost = bankAtm.maintenanceCost;
     }
 
+    private void initId() {
+        id = currentId++;
+    }
+
     public BankAtm() {
+        initId();
         initWithDefaults();
     }
 
     public BankAtm(String name, String address) {
+        initId();
         initWithDefaults();
         this.name = name;
         this.address = address;
@@ -55,6 +61,7 @@ public class BankAtm {
     public BankAtm(String name, String address, WorkingStatus workingStatus, MoneyStatus moneyStatus, Bank bank, BankOffice bankOffice,
                    Employee employee, boolean isCashWithdrawalAvailable, boolean isCashDepositAvailable, BigDecimal totalMoney,
                    BigDecimal maintenanceCost) {
+        initId();
         initWithDefaults();
         this.name = name;
         this.address = address;
@@ -69,7 +76,7 @@ public class BankAtm {
         this.maintenanceCost = maintenanceCost;
     }
 
-    public BankAtm(UUID id, String name, String address, WorkingStatus workingStatus, MoneyStatus moneyStatus, Bank bank, BankOffice bankOffice,
+    public BankAtm(int id, String name, String address, WorkingStatus workingStatus, MoneyStatus moneyStatus, Bank bank, BankOffice bankOffice,
                    Employee employee, boolean isCashWithdrawalAvailable, boolean isCashDepositAvailable, BigDecimal totalMoney,
                    BigDecimal maintenanceCost) {
         this.id = id;
@@ -104,11 +111,11 @@ public class BankAtm {
                 '}';
     }
 
-    public UUID getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -209,7 +216,6 @@ public class BankAtm {
     }
 
     private void initWithDefaults() {
-        id = UUID.randomUUID();
         name = "No name";
         address = "No address";
         workingStatus = WorkingStatus.NOT_WORKING;

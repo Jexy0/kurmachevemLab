@@ -1,6 +1,7 @@
 package tech.reliab.course.kurmachevem.bank.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import tech.reliab.course.kurmachevem.bank.entity.Bank;
 import tech.reliab.course.kurmachevem.bank.entity.BankOffice;
@@ -12,33 +13,54 @@ public interface BankService {
     // Создание банка
     Bank create(Bank bank);
 
+    // Возвращает банк по его ID
+    public Bank getBankById(int bankId);
+
+    // Установка сервиса для управления офисами
+    public void setBankOfficeService(BankOfficeService bankOfficeService);
+
+    // Получение всех офисов банка с заданным ID
+    public List<BankOffice> getAllOfficesByBankId(int id);
+
+    // Установка сервиса для управления клиентами
+    public void setUserService(UserService bankOfficeService);
+
+    // Удаляет банк по его ID
+    public boolean deleteBankById(int bankId);
+
+    // Возвращает все банки
+    public List<Bank> getAllBanks();
+
+    // Вывод данных о банке с заданным ID
+    public void printBankData(int bankId);
+
     // Добавление офиса
-    boolean addOffice(Bank bank, BankOffice bankOffice);
+    public boolean addOffice(int bankId, BankOffice bankOffice);
 
     // Удаление офиса
-    boolean removeOffice(Bank bank, BankOffice bankOffice);
+    public boolean removeOffice(int bankId, BankOffice bankOffice);
 
     // Добавление сотрудника
-    boolean addEmployee(Bank bank, Employee employee);
+    public boolean addEmployee(Bank bank, Employee employee);
 
     // Удаление сотрудника
-    boolean removeEmployee(Bank bank, Employee employee);
+    public boolean removeEmployee(Bank bank, Employee employee);
 
     // Добавление клиента
-    boolean addClient(Bank bank, User client);
+    public boolean addUser(int id, User client);
 
     // Удаление клиента
-    boolean removeClient(Bank bank, User client);
+    boolean removeUser(Bank bank, User user);
 
     // Расчет процентной ставки банка
-    BigDecimal calculateInterestRate(Bank bank);
+    public BigDecimal calculateInterestRate(Bank bank);
 
     // Внести amount денег в банк
-    boolean depositMoney(Bank bank, BigDecimal amount);
+    public boolean depositMoney(int id, BigDecimal amount);
 
     // Вывести amount денег из банка
-    boolean withdrawMoney(Bank bank, BigDecimal amount);
+    public boolean withdrawMoney(int id, BigDecimal amount);
 
     // Оформление заявки на кредит
-    boolean approveCredit(Bank bank, CreditAccount account, Employee employee);
+    public boolean approveCredit(Bank bank, CreditAccount account, Employee employee);
 }
