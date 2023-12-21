@@ -191,4 +191,7 @@ public class Bank {
         accounts = new ArrayList<>();
     }
 
+    public void removeClient(Client client) {
+        clients.remove(clients.indexOf(client));
+    }
 }

@@ -1,10 +1,16 @@
 package tech.reliab.course.kurmachevem.bank.entity;
 
+import com.google.gson.annotations.Expose;
+
 public class Account {
     private static int currentId;
+    @Expose(serialize = true)
     protected int id;
+    @Expose(serialize = false)
     protected Client client;
+    @Expose(serialize = false)
     protected Bank bank;
+
 
     private void initId() {
         id = currentId++;
